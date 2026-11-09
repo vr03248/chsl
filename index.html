@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSC CHSL 20-Day Study Plan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom smooth transition */
+        .smooth-transition {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-12 selection:bg-indigo-500 selection:text-white">
+
+    <!-- App Header -->
+    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base leading-tight">SSC CHSL 2026</h1>
+                    <p class="text-xs text-indigo-400 font-medium">Target: Nov 30 Exam</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="resetProgress()" class="text-xs bg-slate-800 hover:bg-rose-950/50 hover:text-rose-400 text-slate-300 border border-slate-700 hover:border-rose-800/60 px-3 py-1.5 rounded-lg smooth-transition flex items-center space-x-1">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Reset</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto px-4 pt-4 space-y-6">
+
+        <!-- Progress Dashboard Card -->
+        <section class="bg-gradient-to-br from-indigo-950/70 via-slate-900 to-slate-900 border border-indigo-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+            <!-- Decorative blur orb -->
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-md border border-indigo-500/20">Mastery Dashboard</span>
+                    <h2 class="text-xl font-bold mt-2">Your Preparation Progress</h2>
+                </div>
+                <div id="badge-container" class="text-right">
+                    <span id="streak-badge" class="inline-flex items-center space-x-1 text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full">
+                        <i class="fa-solid fa-fire text-amber-400 animate-pulse"></i>
+                        <span id="streak-count">0 Days Streak</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-sm">
+                    <span class="text-slate-400 font-medium">Completed Tasks</span>
+                    <span id="progress-text" class="font-bold text-indigo-400">0 / 20 Days (0%)</span>
+                </div>
+                <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                    <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-violet-500 h-full rounded-full w-0 smooth-transition"></div>
+                </div>
+            </div>
+
+            <!-- Motivational Banner / Completion Alert -->
+            <div id="completion-banner" class="hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl p-3 text-xs flex items-center space-x-2">
+                <i class="fa-solid fa-trophy text-emerald-400 text-lg"></i>
+                <div>
+                    <span class="font-bold block">Outstanding dedication!</span>
+                    <span>You have completed your 20-day revision plan. You're ready to ace SSC CHSL!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase Navigation Tabs -->
+        <div class="flex space-x-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
+            <button onclick="filterPhase('all')" id="tab-all" class="flex-1 py-2 rounded-lg bg-indigo-600 text-white smooth-transition shadow-sm">All Days</button>
+            <button onclick="filterPhase('phase1')" id="tab-phase1" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white smooth-transition">Phase 1</button>
+            <button onclick="filterPhase('phase2')" id="tab-phase2" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white smooth-transition">Phase 2</button>
+            <button onclick="filterPhase('phase3')" id="tab-phase3" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white smooth-transition">Phase 3</button>
+        </div>
+
+        <!-- Checklist Container -->
+        <div id="checklist-container" class="space-y-3.5">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- Footer Note -->
+    <footer class="max-w-md mx-auto px-4 mt-8 text-center text-xs text-slate-500">
+        <p>SSC CHSL 2026 Master Plan • Designed for iPhone & Mobile Web</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Study Plan Data Structure
+        const studyPlanData = [
+            {
+                id: "day1",
+                dayNumber: 1,
+                date: "Nov 10",
+                title: "Arithmetic Foundation Review",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Revise Percentage, Ratio & Proportion core formulas",
+                    "Solve 30 mixed arithmetic Previous Year Questions (PYQs)"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+percentage+ratio+proportion+revision",
+                youtubeLabel: "Watch Arithmetic Revision Stream"
+            },
+            {
+                id: "day2",
+                dayNumber: 2,
+                date: "Nov 11",
+                title: "Reasoning Speed Drill",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Focus on Number Series, Coding-Decoding, and Analogy traps",
+                    "Attempt 1 full Reasoning sectional mock test"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+reasoning+speed+tricks+coding+decoding",
+                youtubeLabel: "Watch Reasoning Speed Hacks"
+            },
+            {
+                id: "day3",
+                dayNumber: 3,
+                date: "Nov 12",
+                title: "Ancient & Medieval History + Polity",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Revise Indus Valley, Vedic Age, Maurya, and Gupta empires",
+                    "Polity: Fundamental Rights, DPSP, and Constitutional Articles"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+history+polity+one+shot+revision",
+                youtubeLabel: "Watch History & Polity Rapid Revision"
+            },
+            {
+                id: "day4",
+                dayNumber: 4,
+                date: "Nov 13",
+                title: "Advanced Math - Algebra & Mensuration",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Memorize all algebraic identities & 2D/3D formulas",
+                    "Solve 25 standard geometry & mensuration problems"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+algebra+mensuration+formulas+tricks",
+                youtubeLabel: "Watch Advanced Math Formula Session"
+            },
+            {
+                id: "day5",
+                dayNumber: 5,
+                date: "Nov 14",
+                title: "Full Mock Test #1 + Deep Analysis",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Take 1st Full-Length CBT Mock under strict 60-min timer",
+                    "Spend 1.5 hours analyzing every mistake & skipped question"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+mock+test+analysis+strategy",
+                youtubeLabel: "Watch Mock Test Attempt Strategy"
+            },
+            {
+                id: "day6",
+                dayNumber: 6,
+                date: "Nov 15",
+                title: "Geography & Modern Indian History",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Indian physical geography, river systems, and climate",
+                    "Indian National Movement (1885-1947) major milestones"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+indian+geography+modern+history",
+                youtubeLabel: "Watch Geography & National Movement"
+            },
+            {
+                id: "day7",
+                dayNumber: 7,
+                date: "Nov 16",
+                title: "Arithmetic - Profit/Loss, SI & CI",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Focus on successive percentage and installment shortcuts",
+                    "Solve high-level word problems without heavy calculation"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+profit+loss+si+ci+shortcuts",
+                youtubeLabel: "Watch Profit, Loss & Interest Shortcuts"
+            },
+            {
+                id: "day8",
+                dayNumber: 8,
+                date: "Nov 17",
+                title: "Reasoning Puzzles & Non-Verbal Drills",
+                phase: "phase1",
+                phaseName: "Phase 1: Core Revision",
+                sublines: [
+                    "Syllogism, Blood Relations, Paper Folding, and Mirror Images",
+                    "Attempt 1 Reasoning sectional timed test"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+syllogism+blood+relation+non+verbal",
+                youtubeLabel: "Watch Non-Verbal & Puzzles Masterclass"
+            },
+            {
+                id: "day9",
+                dayNumber: 9,
+                date: "Nov 18",
+                title: "General Science & Computer Awareness",
+                phase: "phase2",
+                phaseName: "Phase 2: Speed & Advanced Drills",
+                sublines: [
+                    "Physics, Chemistry, and Biology high-yield repeated facts",
+                    "Computer: MS Office shortcuts, hardware/software basics"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+general+science+computer+awareness",
+                youtubeLabel: "Watch Science & Computer Crash Course"
+            },
+            {
+                id: "day10",
+                dayNumber: 10,
+                date: "Nov 19",
+                title: "Full Mock Test #2 + Error Log Review",
+                phase: "phase2",
+                phaseName: "Phase 2: Speed & Advanced Drills",
+                sublines: [
+                    "Take 2nd Full-Length CBT Mock",
+                    "Update error notebook and revise weak conceptual zones"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+maths+reasoning+mix+practice+mock",
+                youtubeLabel: "Watch Full Sectional Practice Drill"
+            },
+            {
+                id: "day11",
+                dayNumber: 11,
+                date: "Nov 20",
+                title: "Advanced Math - Trigonometry & Geometry",
+                phase: "phase2",
+                phaseName: "Phase 2: Speed & Advanced Drills",
+                sublines: [
+                    "Triangles, circles, chords, and trigonometric angle values",
+                    "Solve mixed advanced math PYQs under 30 minutes"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+trigonometry+geometry+questions",
+                youtubeLabel: "Watch Trigonometry & Geometry Tricks"
+            },
+            {
+                id: "day12",
+                dayNumber: 12,
+                date: "Nov 21",
+                title: "Current Affairs Deep Dive (Part 1)",
+                phase: "phase2",
+                phaseName: "Phase 2: Speed & Advanced Drills",
+                sublines: [
+                    "National and international events from last 6 months",
+                    "Government welfare schemes, budget highlights, and awards"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+current+affairs+6+months+revision",
+                youtubeLabel: "Watch 6-Month Current Affairs Compilation"
+            },
+            {
+                id: "day13",
+                dayNumber: 13,
+                date: "Nov 22",
+                title: "Arithmetic - Time, Speed, Distance & Work",
+                phase: "phase2",
+                phaseName: "Phase 2: Speed & Advanced Drills",
+                sublines: [
+                    "Boats & streams, pipes & cisterns, and relative speed problems",
+                    "High-speed mental calculation drills"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+time+speed+distance+time+work",
+                youtubeLabel: "Watch Time, Speed & Distance Masterclass"
+            },
+            {
+                id: "day14",
+                dayNumber: 14,
+                date: "Nov 23",
+                title: "Full Mock Test #3 + Accuracy Check",
+                phase: "phase2",
+                phaseName: "Phase 2: Speed & Advanced Drills",
+                sublines: [
+                    "Take 3rd Full-Length CBT Mock",
+                    "Focus on reducing negative marking and blind guessing"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+how+to+avoid+negative+marking",
+                youtubeLabel: "Watch Exam Accuracy & Guesswork Strategy"
+            },
+            {
+                id: "day15",
+                dayNumber: 15,
+                date: "Nov 24",
+                title: "Static GK Special",
+                phase: "phase3",
+                phaseName: "Phase 3: Final Simulation & Tapering",
+                sublines: [
+                    "National parks, folk dances, classical music, and festivals",
+                    "Important sports trophies, dance forms, and authors"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+static+gk+national+parks+dances",
+                youtubeLabel: "Watch Ultimate Static GK Marathon"
+            },
+            {
+                id: "day16",
+                dayNumber: 16,
+                date: "Nov 25",
+                title: "Vocab & Quant Formula Final Brush-up",
+                phase: "phase3",
+                phaseName: "Phase 3: Final Simulation & Tapering",
+                sublines: [
+                    "Quick review of all formula sheets and core grammar rules",
+                    "Targeted sectional timed tests for weaker areas"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+english+vocab+grammar+quick+revision",
+                youtubeLabel: "Watch English & Vocab Rapid Fire"
+            },
+            {
+                id: "day17",
+                dayNumber: 17,
+                date: "Nov 26",
+                title: "Full Mock Test #4",
+                phase: "phase3",
+                phaseName: "Phase 3: Final Simulation & Tapering",
+                sublines: [
+                    "Simulate exact exam day conditions (afternoon shift slot)",
+                    "Thorough analysis of time management and stamina"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+exam+day+time+management+tips",
+                youtubeLabel: "Watch Exam Day Time Management Guide"
+            },
+            {
+                id: "day18",
+                dayNumber: 18,
+                date: "Nov 27",
+                title: "Error Notebook & Current Affairs Recap",
+                phase: "phase3",
+                phaseName: "Phase 3: Final Simulation & Tapering",
+                sublines: [
+                    "Review all mistakes logged over the past 17 days",
+                    "Quick glance at 8-month current affairs capsule notes"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+last+minute+revision+strategy",
+                youtubeLabel: "Watch Last-Minute Revision Strategy"
+            },
+            {
+                id: "day19",
+                dayNumber: 19,
+                date: "Nov 28",
+                title: "Final Light Mock Test #5",
+                phase: "phase3",
+                phaseName: "Phase 3: Final Simulation & Tapering",
+                sublines: [
+                    "Last full-length mock to build absolute confidence",
+                    "Keep analysis brief—focus on mental relaxation and sleep"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+motivation+before+exam",
+                youtubeLabel: "Watch Exam Eve Motivation & Tips"
+            },
+            {
+                id: "day20",
+                dayNumber: 20,
+                date: "Nov 29",
+                title: "Rest & Mind Prep",
+                phase: "phase3",
+                phaseName: "Phase 3: Final Simulation & Tapering",
+                sublines: [
+                    "Light formula review only (no heavy problem solving today)",
+                    "Verify admit card, exam city, ID proofs, and sleep early"
+                ],
+                youtube: "https://www.youtube.com/results?search_query=ssc+chsl+exam+day+guidelines",
+                youtubeLabel: "Watch Exam Day Guidelines & Checklist"
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        // Load saved state from localStorage
+        function getSavedProgress() {
+            try {
+                const saved = localStorage.getItem('ssc_chsl_progress_2026');
+                return saved ? JSON.parse(saved) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveProgress(progressObj) {
+            try {
+                localStorage.setItem('ssc_chsl_progress_2026', JSON.stringify(progressObj));
+            } catch (e) {}
+        }
+
+        // Toggle Task Completion
+        function toggleTask(id) {
+            const progress = getSavedProgress();
+            progress[id] = !progress[id];
+            saveProgress(progress);
+            renderApp();
+        }
+
+        // Toggle Card Expansion
+        function toggleExpand(id) {
+            const contentEl = document.getElementById(`content-${id}`);
+            const iconEl = document.getElementById(`icon-${id}`);
+            if (contentEl.classList.contains('hidden')) {
+                contentEl.classList.remove('hidden');
+                iconEl.classList.add('rotate-180');
+            } else {
+                contentEl.classList.add('hidden');
+                iconEl.classList.remove('rotate-180');
+            }
+        }
+
+        // Filter Phase
+        function filterPhase(phase) {
+            currentFilter = phase;
+            ['all', 'phase1', 'phase2', 'phase3'].forEach(p => {
+                const btn = document.getElementById(`tab-${p}`);
+                if (p === phase) {
+                    btn.className = "flex-1 py-2 rounded-lg bg-indigo-600 text-white smooth-transition shadow-sm";
+                } else {
+                    btn.className = "flex-1 py-2 rounded-lg text-slate-400 hover:text-white smooth-transition";
+                }
+            });
+            renderChecklist();
+        }
+
+        // Reset Progress
+        function resetProgress() {
+            if (confirm("Are you sure you want to reset all your checklist progress?")) {
+                localStorage.removeItem('ssc_chsl_progress_2026');
+                renderApp();
+            }
+        }
+
+        // Render Checklist Items
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            const progress = getSavedProgress();
+            
+            const filteredData = studyPlanData.filter(item => {
+                if (currentFilter === 'all') return true;
+                return item.phase === currentFilter;
+            });
+
+            container.innerHTML = '';
+
+            filteredData.forEach(item => {
+                const isChecked = !!progress[item.id];
+
+                const card = document.createElement('div');
+                card.className = `bg-slate-900 border ${isChecked ? 'border-emerald-500/30 bg-emerald-950/10' : 'border-slate-800'} rounded-2xl p-4 smooth-transition shadow-sm`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start space-x-3 flex-1 cursor-pointer" onclick="toggleTask('${item.id}')">
+                            <div class="mt-0.5 w-6 h-6 rounded-lg border ${isChecked ? 'bg-emerald-500 border-emerald-500 text-slate-950' : 'border-slate-700 bg-slate-800'} flex items-center justify-center smooth-transition flex-shrink-0">
+                                ${isChecked ? '<i class="fa-solid fa-check text-xs font-bold"></i>' : ''}
+                            </div>
+                            <div class="flex-1 pr-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-800 text-indigo-400 border border-slate-700">${item.date}</span>
+                                    <span class="text-xs text-slate-500 font-medium">Day ${item.dayNumber}</span>
+                                </div>
+                                <h3 class="font-semibold text-sm mt-1 ${isChecked ? 'line-through text-slate-400' : 'text-slate-200'}">${item.title}</h3>
+                            </div>
+                        </div>
+                        <button onclick="toggleExpand('${item.id}')" class="p-2 text-slate-400 hover:text-slate-200 smooth-transition">
+                            <i id="icon-${item.id}" class="fa-solid fa-chevron-down text-xs smooth-transition"></i>
+                        </button>
+                    </div>
+
+                    <!-- Expandable Subtasks & YouTube Link -->
+                    <div id="content-${item.id}" class="hidden mt-3 pt-3 border-t border-slate-800/80 space-y-3">
+                        <ul class="space-y-1.5 text-xs text-slate-300 pl-2">
+                            ${item.sublines.map(sub => `<li class="flex items-start space-x-2"><span class="text-indigo-400 mt-0.5">•</span><span>${sub}</span></li>`).join('')}
+                        </ul>
+                        <div class="pt-1">
+                            <a href="${item.youtube}" target="_blank" class="inline-flex items-center space-x-1.5 text-xs font-medium text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 px-3 py-1.5 rounded-xl smooth-transition">
+                                <i class="fa-brands fa-youtube text-rose-500 text-sm"></i>
+                                <span>${item.youtubeLabel}</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render Dashboard Stats & Progress
+        function renderDashboard() {
+            const progress = getSavedProgress();
+            const totalDays = studyPlanData.length;
+            const completedCount = studyPlanData.filter(item => progress[item.id]).length;
+            const percentage = Math.round((completedCount / totalDays) * 100);
+
+            // Update Progress Bar
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-text').innerText = `${completedCount} / ${totalDays} Days (${percentage}%)`;
+
+            // Calculate streak (consecutive completed starting from Day 1)
+            let streak = 0;
+            for (let i = 0; i < studyPlanData.length; i++) {
+                if (progress[studyPlanData[i].id]) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+
+            document.getElementById('streak-count').innerText = `${streak} Days Streak`;
+
+            // Completion Banner
+            const banner = document.getElementById('completion-banner');
+            if (completedCount === totalDays) {
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        // Full App Render
+        function renderApp() {
+            renderDashboard();
+            renderChecklist();
+        }
+
+        // Initial Load on Window Load
+        window.onload = function () {
+            renderApp();
+        };
+    </script>
+</body>
+</html>
